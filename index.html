@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#15100a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>The Knee Floss — Daily Rites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #15100a;
+    --smoke: #1f1810;
+    --parchment: #e6d3a7;
+    --parchment-dark: #d4bd8a;
+    --ink: #2a1d10;
+    --ink-soft: #4a3a26;
+    --bronze: #a07c3c;
+    --bronze-dim: #6e5527;
+    --blood: #7e2420;
+    --blood-bright: #9c2f28;
+    --ash: #8a7a5e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--night);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(160,124,60,0.10), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 110%, rgba(126,36,32,0.08), transparent 60%);
+    color: var(--parchment);
+    font-family: 'EB Garamond', Georgia, serif;
+    min-height: 100vh;
+    font-size: 17px;
+  }
+
+  .frame { max-width: 480px; margin: 0 auto; padding: 26px 16px 60px; }
+
+  /* ---------- Header ---------- */
+  .crest { text-align: center; margin-bottom: 6px; color: var(--bronze); font-size: 20px; letter-spacing: 0.5em; }
+  h1 {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    text-align: center;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--parchment);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+  .subtitle {
+    text-align: center;
+    font-style: italic;
+    color: var(--ash);
+    margin-top: 6px;
+    font-size: 15px;
+  }
+  .rule {
+    display: flex; align-items: center; gap: 10px;
+    margin: 16px 0 20px; color: var(--bronze-dim);
+  }
+  .rule::before, .rule::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--bronze-dim)); }
+  .rule::after { background: linear-gradient(90deg, var(--bronze-dim), transparent); }
+  .rule span { font-size: 13px; letter-spacing: 0.3em; font-family: 'Cinzel', serif; }
+
+  /* ---------- Stat plaques ---------- */
+  .plaques { display: flex; gap: 8px; margin-bottom: 18px; }
+  .plaque {
+    flex: 1;
+    background: linear-gradient(180deg, var(--smoke), #181209);
+    border: 1px solid var(--bronze-dim);
+    outline: 1px solid rgba(160,124,60,0.18);
+    outline-offset: 3px;
+    padding: 10px 8px 9px;
+    text-align: center;
+  }
+  .plaque .label { font-family: 'Cinzel', serif; font-size: 9.5px; letter-spacing: 0.18em; color: var(--ash); }
+  .plaque .value { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: var(--parchment); margin-top: 3px; line-height: 1; }
+  .plaque .unit { font-size: 12px; font-style: italic; color: var(--ash); margin-top: 3px; }
+
+  /* ---------- Trial progress ---------- */
+  .trial {
+    background: linear-gradient(180deg, var(--smoke), #181209);
+    border: 1px solid var(--bronze-dim);
+    padding: 13px 15px;
+    margin-bottom: 20px;
+  }
+  .trial-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
+  .trial-head .t { font-family: 'Cinzel', serif; font-size: 11.5px; letter-spacing: 0.18em; color: var(--bronze); }
+  .trial-head .p { font-family: 'Cinzel', serif; font-size: 12px; color: var(--ash); }
+  .trial-bar { height: 7px; background: rgba(0,0,0,0.5); border: 1px solid rgba(160,124,60,0.25); }
+  .trial-fill { height: 100%; background: linear-gradient(90deg, var(--blood), var(--blood-bright)); transition: width .4s ease; }
+  .trial-fill.gold { background: linear-gradient(90deg, var(--bronze-dim), var(--bronze)); }
+  .trial-msg { margin-top: 9px; font-style: italic; font-size: 14.5px; color: var(--bronze); }
+
+  /* ---------- Tabs ---------- */
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab {
+    flex: 1; font-family: 'Cinzel', serif; font-size: 12.5px; letter-spacing: 0.14em;
+    padding: 9px 0; text-align: center; cursor: pointer; user-select: none;
+    color: var(--ash); border: 1px solid transparent; background: none;
+  }
+  .tab.active { color: var(--parchment); border: 1px solid var(--bronze-dim); background: rgba(160,124,60,0.07); }
+
+  /* ---------- Parchment rite cards ---------- */
+  .rites { display: flex; flex-direction: column; gap: 11px; }
+  .rite {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.25), transparent 50%),
+      radial-gradient(ellipse at 90% 100%, rgba(90,60,20,0.18), transparent 55%),
+      linear-gradient(170deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+    color: var(--ink);
+    border: 1px solid #5a4422;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 0 30px rgba(120,85,30,0.18);
+    padding: 13px 58px 12px 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+    transition: transform .12s ease, filter .2s ease;
+  }
+  .rite:active { transform: scale(0.985); }
+  .rite .name { font-family: 'Cinzel', serif; font-weight: 600; font-size: 15.5px; letter-spacing: 0.02em; }
+  .rite .dose { font-style: italic; color: var(--blood); font-size: 14px; margin-left: 4px; }
+  .rite .cue { font-size: 14px; color: var(--ink-soft); font-style: italic; margin-top: 3px; line-height: 1.35; }
+  .rite.done { filter: saturate(0.92) brightness(0.97); }
+  .rite.done .name { color: var(--ink-soft); }
+
+  /* Wax seal — the signature */
+  .seal {
+    position: absolute; right: 11px; top: 50%; transform: translateY(-50%) scale(0.4) rotate(-20deg);
+    width: 40px; height: 40px; border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #b8423a, var(--blood) 55%, #58150f 100%);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.45), inset 0 0 0 3px rgba(0,0,0,0.18), inset 0 0 9px rgba(255,200,180,0.25);
+    display: flex; align-items: center; justify-content: center;
+    color: #ecc9a8; font-family: 'Cinzel', serif; font-weight: 700; font-size: 18px;
+    opacity: 0; transition: opacity .25s ease, transform .25s cubic-bezier(.2,1.6,.4,1);
+    pointer-events: none;
+  }
+  .rite.done .seal { opacity: 1; transform: translateY(-50%) scale(1) rotate(-8deg); }
+  .seal::after {
+    content: ""; position: absolute; inset: -5px; border-radius: 50%;
+    border: 1.5px solid rgba(126,36,32,0.5);
+  }
+
+  /* ---------- Banner ---------- */
+  .banner {
+    margin-top: 15px; padding: 11px 14px; text-align: center;
+    font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.08em;
+    border: 1px dashed var(--bronze-dim); color: var(--ash);
+  }
+  .banner.complete {
+    border: 1px solid var(--bronze); color: var(--parchment);
+    background: linear-gradient(180deg, rgba(160,124,60,0.14), rgba(126,36,32,0.10));
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  }
+
+  /* ---------- Panels (feel + note) ---------- */
+  .panel {
+    background: linear-gradient(180deg, var(--smoke), #181209);
+    border: 1px solid var(--bronze-dim);
+    padding: 14px 15px; margin-top: 15px;
+  }
+  .panel .label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.18em; color: var(--bronze); margin-bottom: 11px; }
+  .feel-row { display: flex; gap: 7px; }
+  .feel {
+    flex: 1; padding: 10px 0; text-align: center; cursor: pointer;
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: 16px;
+    color: var(--ash); background: rgba(0,0,0,0.3); border: 1px solid rgba(160,124,60,0.25);
+  }
+  .feel.on { color: var(--parchment); background: linear-gradient(180deg, var(--blood-bright), var(--blood)); border-color: var(--blood-bright); }
+  .feel-word { text-align: center; font-style: italic; color: var(--ash); font-size: 14.5px; margin-top: 9px; min-height: 18px; }
+  textarea {
+    width: 100%; background: rgba(0,0,0,0.35); border: 1px solid rgba(160,124,60,0.3);
+    color: var(--parchment); font-family: 'EB Garamond', serif; font-size: 15.5px;
+    padding: 10px 12px; resize: vertical; min-height: 56px;
+  }
+  textarea::placeholder { color: #6e6048; font-style: italic; }
+  textarea:focus { outline: 1px solid var(--bronze); }
+
+  /* ---------- Chronicle (history) ---------- */
+  .fortnight { display: flex; gap: 4px; }
+  .fday { flex: 1; }
+  .fday .mark { height: 26px; background: rgba(255,255,255,0.05); border: 1px solid rgba(160,124,60,0.18); }
+  .fday.full .mark { background: linear-gradient(180deg, var(--blood-bright), var(--blood)); border-color: var(--blood-bright); }
+  .fday.part .mark { background: rgba(160,124,60,0.35); }
+  .fday .d { font-size: 9.5px; text-align: center; color: var(--ash); margin-top: 4px; font-family: 'Cinzel', serif; }
+  .entry {
+    background: linear-gradient(180deg, var(--smoke), #181209);
+    border: 1px solid rgba(160,124,60,0.3);
+    padding: 11px 14px; margin-top: 9px;
+  }
+  .entry .row { display: flex; justify-content: space-between; align-items: baseline; }
+  .entry .date { font-family: 'Cinzel', serif; font-size: 13.5px; letter-spacing: 0.05em; }
+  .entry .score { font-family: 'Cinzel', serif; font-size: 12.5px; color: var(--ash); }
+  .entry .score.full { color: var(--bronze); }
+  .entry .note { font-style: italic; font-size: 14.5px; color: var(--ash); margin-top: 5px; line-height: 1.4; }
+  .empty { text-align: center; font-style: italic; color: var(--ash); padding: 34px 16px; }
+
+  .motto { text-align: center; margin-top: 34px; font-style: italic; color: #5e5138; font-size: 14px; line-height: 1.5; }
+  .hidden { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rite, .seal, .trial-fill { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <div class="crest">⚔</div>
+  <h1>The Knee Floss</h1>
+  <div class="subtitle">Daily rites for the bulletproofing of the knees</div>
+  <div class="rule"><span id="dateLine">—</span></div>
+
+  <div class="plaques">
+    <div class="plaque"><div class="label">VIGIL</div><div class="value" id="streakVal">0</div><div class="unit" id="streakUnit">days unbroken</div></div>
+    <div class="plaque"><div class="label">RITES KEPT</div><div class="value" id="sessVal">0</div><div class="unit">of 21</div></div>
+    <div class="plaque"><div class="label">KNEES, 7 DAYS</div><div class="value" id="feelVal">–</div><div class="unit">of 5</div></div>
+  </div>
+
+  <div class="trial">
+    <div class="trial-head"><span class="t">THE SECOND TRIAL</span><span class="p" id="trialPct">0%</span></div>
+    <div class="trial-bar"><div class="trial-fill" id="trialFill" style="width:0%"></div></div>
+    <div class="trial-msg hidden" id="trialMsg">Twenty one rites kept and the knees stand strong. The Second Trial awaits — return to Claude for the next progression.</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tabToday" onclick="setView('today')">TODAY'S RITES</button>
+    <button class="tab" id="tabChron" onclick="setView('chronicle')">THE CHRONICLE</button>
+  </div>
+
+  <!-- ============ TODAY ============ -->
+  <div id="viewToday">
+    <div class="rites" id="riteList"></div>
+    <div class="banner" id="banner">—</div>
+
+    <div class="panel">
+      <div class="label">HOW FARE THE KNEES?</div>
+      <div class="feel-row" id="feelRow"></div>
+      <div class="feel-word" id="feelWord">1 = broken · 5 = ironclad</div>
+    </div>
+
+    <div class="panel">
+      <div class="label">SCRIBE'S NOTE</div>
+      <textarea id="noteBox" rows="2" placeholder="Left leg wavered on the step-downs… the Spanish squats grow easy…"></textarea>
+    </div>
+  </div>
+
+  <!-- ============ CHRONICLE ============ -->
+  <div id="viewChronicle" class="hidden">
+    <div class="panel" style="margin-top:0">
+      <div class="label">THE LAST FORTNIGHT</div>
+      <div class="fortnight" id="fortnight"></div>
+    </div>
+    <div id="entryList"></div>
+  </div>
+
+  <div class="motto">Floss before sport, never after.<br>It counts even when it is ugly.</div>
+</div>
+
+<script>
+  var RITES = [
+    { id: "tib",      name: "Tibialis Raises",        dose: "25",        cue: "Back to the wall, toes drawn to the shins, lowered slow." },
+    { id: "calf",     name: "Calf Raises",            dose: "25 slow",   cue: "A pause at the summit, a two-count descent." },
+    { id: "spanish",  name: "Spanish Squats",         dose: "15",        cue: "Band behind the knees, lean back, sink to parallel." },
+    { id: "stepdown", name: "Step-Downs",             dose: "10 a leg",  cue: "Three seconds down, the knee true over the toes." },
+    { id: "tke",      name: "Terminal Knee Extensions", dose: "15 a leg", cue: "Full lockout, the quad clenched hard at the end." }
+  ];
+  var KEY = "kneefloss-grimoire-v1";
+  var GOAL = 21;
+  var FEEL_WORDS = ["", "Broken", "Weary", "Steady", "Strong", "Ironclad"];
+
+  var entries = {};
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) entries = JSON.parse(raw).entries || {};
+  } catch (e) { entries = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify({ entries: entries })); }
+    catch (e) { /* storage unavailable; session continues in memory */ }
+  }
+
+  function dayKey(d) {
+    d = d || new Date();
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  }
+  function lastNDays(n) {
+    var out = [];
+    for (var i = n - 1; i >= 0; i--) { var d = new Date(); d.setDate(d.getDate() - i); out.push(dayKey(d)); }
+    return out;
+  }
+  function getToday() {
+    var k = dayKey();
+    if (!entries[k]) entries[k] = { done: [], feel: 0, note: "" };
+    return entries[k];
+  }
+  function isComplete(e) { return e && e.done && e.done.length === RITES.length; }
+  function streak() {
+    var s = 0, d = new Date();
+    if (!isComplete(entries[dayKey(d)])) d.setDate(d.getDate() - 1);
+    while (isComplete(entries[dayKey(d)])) { s++; d.setDate(d.getDate() - 1); }
+    return s;
+  }
+
+  // ---------- Render ----------
+  function render() {
+    var today = getToday();
+
+    document.getElementById("dateLine").textContent = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" }).toUpperCase();
+
+    // rites
+    var list = document.getElementById("riteList");
+    list.innerHTML = "";
+    RITES.forEach(function(r) {
+      var done = today.done.indexOf(r.id) !== -1;
+      var b = document.createElement("button");
+      b.className = "rite" + (done ? " done" : "");
+      b.innerHTML =
+        '<div class="name">' + r.name + ' <span class="dose">· ' + r.dose + '</span></div>' +
+        '<div class="cue">' + r.cue + '</div>' +
+        '<div class="seal">✓</div>';
+      b.onclick = function() {
+        var i = today.done.indexOf(r.id);
+        if (i === -1) today.done.push(r.id); else today.done.splice(i, 1);
+        save(); render();
+      };
+      list.appendChild(b);
+    });
+
+    // banner
+    var n = today.done.length;
+    var banner = document.getElementById("banner");
+    if (n === RITES.length) {
+      banner.className = "banner complete";
+      banner.textContent = "THE RITES ARE KEPT. THE KNEES ARE ARMORED.";
+    } else {
+      banner.className = "banner";
+      banner.textContent = n + " OF " + RITES.length + " RITES KEPT · ROUGHLY " + ((RITES.length - n) * 2) + " MINUTES REMAIN";
+    }
+
+    // feel
+    var row = document.getElementById("feelRow");
+    row.innerHTML = "";
+    for (var f = 1; f <= 5; f++) {
+      (function(f) {
+        var d = document.createElement("button");
+        d.className = "feel" + (today.feel === f ? " on" : "");
+        d.textContent = f;
+        d.onclick = function() { today.feel = (today.feel === f ? 0 : f); save(); render(); };
+        row.appendChild(d);
+      })(f);
+    }
+    document.getElementById("feelWord").textContent = today.feel ? FEEL_WORDS[today.feel] : "1 = broken · 5 = ironclad";
+
+    // note
+    var box = document.getElementById("noteBox");
+    if (document.activeElement !== box) box.value = today.note || "";
+
+    // stats
+    var keys = Object.keys(entries);
+    var total = keys.filter(function(k){ return isComplete(entries[k]); }).length;
+    var s = streak();
+    document.getElementById("streakVal").textContent = s;
+    document.getElementById("streakUnit").textContent = s === 1 ? "day unbroken" : "days unbroken";
+    document.getElementById("sessVal").textContent = total;
+
+    var feels = lastNDays(7).map(function(k){ return entries[k] && entries[k].feel; }).filter(function(x){ return x > 0; });
+    var avg = feels.length ? feels.reduce(function(a,b){ return a+b; }, 0) / feels.length : 0;
+    document.getElementById("feelVal").textContent = avg ? avg.toFixed(1) : "–";
+
+    // trial
+    var pct = Math.min(100, Math.round(total / GOAL * 100));
+    var ready = total >= GOAL && avg >= 4;
+    var fill = document.getElementById("trialFill");
+    fill.style.width = pct + "%";
+    fill.className = "trial-fill" + (ready ? " gold" : "");
+    document.getElementById("trialPct").textContent = ready ? "UNLOCKED" : pct + "%";
+    document.getElementById("trialMsg").className = "trial-msg" + (ready ? "" : " hidden");
+
+    renderChronicle();
+  }
+
+  function renderChronicle() {
+    var fort = document.getElementById("fortnight");
+    fort.innerHTML = "";
+    lastNDays(14).forEach(function(k) {
+      var e = entries[k];
+      var cls = "fday" + (isComplete(e) ? " full" : (e && e.done && e.done.length > 0 ? " part" : ""));
+      var d = document.createElement("div");
+      d.className = cls;
+      d.innerHTML = '<div class="mark"></div><div class="d">' + k.slice(8) + '</div>';
+      fort.appendChild(d);
+    });
+
+    var listEl = document.getElementById("entryList");
+    listEl.innerHTML = "";
+    var keys = Object.keys(entries).filter(function(k){
+      var e = entries[k];
+      return (e.done && e.done.length) || e.feel || e.note;
+    }).sort().reverse().slice(0, 30);
+
+    if (keys.length === 0) {
+      listEl.innerHTML = '<div class="empty">The chronicle is empty. The first rite is kept on the morrow.</div>';
+      return;
+    }
+    keys.forEach(function(k) {
+      var e = entries[k];
+      var full = isComplete(e);
+      var div = document.createElement("div");
+      div.className = "entry";
+      var dateStr = new Date(k + "T12:00:00").toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" });
+      div.innerHTML =
+        '<div class="row"><span class="date">' + dateStr + '</span>' +
+        '<span class="score' + (full ? ' full' : '') + '">' + (e.done ? e.done.length : 0) + '/' + RITES.length +
+        (e.feel ? ' · knees ' + e.feel : '') + '</span></div>' +
+        (e.note ? '<div class="note">' + e.note.replace(/</g,"&lt;") + '</div>' : '');
+      listEl.appendChild(div);
+    });
+  }
+
+  function setView(v) {
+    document.getElementById("viewToday").className = v === "today" ? "" : "hidden";
+    document.getElementById("viewChronicle").className = v === "chronicle" ? "" : "hidden";
+    document.getElementById("tabToday").className = "tab" + (v === "today" ? " active" : "");
+    document.getElementById("tabChron").className = "tab" + (v === "chronicle" ? " active" : "");
+  }
+
+  document.getElementById("noteBox").addEventListener("blur", function() {
+    getToday().note = this.value; save(); render();
+  });
+
+  render();
+</script>
+</body>
+</html>
