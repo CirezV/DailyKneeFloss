@@ -1,440 +1,632 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#15100a">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>The Knee Floss — Daily Rites</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Vigil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --night: #15100a;
-    --smoke: #1f1810;
-    --parchment: #e6d3a7;
-    --parchment-dark: #d4bd8a;
-    --ink: #2a1d10;
-    --ink-soft: #4a3a26;
-    --bronze: #a07c3c;
-    --bronze-dim: #6e5527;
-    --blood: #7e2420;
-    --blood-bright: #9c2f28;
-    --ash: #8a7a5e;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#161009;            /* dark leather backdrop */
+  --card:#E9DCC0;          /* aged parchment */
+  --card2:#DECFAE;         /* deeper parchment */
+  --line:#B9A87F;          /* faded ink border */
+  --line2:#8F7B52;
+  --txt:#2A2119;           /* iron-gall ink */
+  --sub:#5C4F3D;
+  --mut:#8A7A5F;
+  --acc:#8A1B1B;           /* blood-red wax */
+  --accInk:#F2E7CE;
+  --amber:#7A4E12;
+  --blue:#3E5C76;
+  --gold:#8A6D3B;
+  --disp:'Cinzel','DejaVu Serif',serif;
+  --body:'EB Garamond','DejaVu Serif',serif;
+  --r:6px;
+}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--body);
+  -webkit-font-smoothing:antialiased;font-size:16.5px}
+body{background:
+  radial-gradient(120% 70% at 50% 0%,#241a10 0%,#161009 60%),#161009}
+body{min-height:100vh}
+.app{max-width:520px;margin:0 auto;padding:22px 18px 108px}
 
-  body {
-    background: var(--night);
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(160,124,60,0.10), transparent 60%),
-      radial-gradient(ellipse 60% 40% at 50% 110%, rgba(126,36,32,0.08), transparent 60%);
-    color: var(--parchment);
-    font-family: 'EB Garamond', Georgia, serif;
-    min-height: 100vh;
-    font-size: 17px;
-  }
+/* header */
+.hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.hdr .date{font-family:var(--disp);font-weight:700;font-size:27px;letter-spacing:.02em;line-height:1.1;
+  color:#EADFC6;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.hdr .sub{color:#B7A784;font-size:15.5px;margin-top:5px;font-weight:500;font-style:italic}
+.streak{display:flex;align-items:center;gap:8px;background:linear-gradient(180deg,#241a10,#1B130B);
+  border:1px solid #4a3a22;border-radius:4px;padding:9px 15px;flex:0 0 auto;
+  box-shadow:inset 0 0 0 1px rgba(234,223,198,.08)}
+.streak b{color:#EADFC6}
+.streak b{font-family:var(--disp);font-weight:700;font-size:17px}
+.streak span{color:#B7A784;font-size:13px;font-weight:500;font-style:italic}
+.bolt{width:14px;height:14px;color:#C9412F}
 
-  .frame { max-width: 480px; margin: 0 auto; padding: 26px 16px 60px; }
+/* week strip */
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:20px}
+.wd{display:flex;flex-direction:column;align-items:center;gap:7px}
+.wd .l{font-family:var(--disp);font-size:11px;font-weight:600;color:#8A7A5F;letter-spacing:.08em}
+.wd .c{width:100%;aspect-ratio:1;max-width:44px;border-radius:4px;border:1px solid #4a3a22;
+  background:linear-gradient(180deg,#221910,#191209);
+  display:grid;place-items:center;transition:all .25s cubic-bezier(.2,.8,.2,1);position:relative;
+  box-shadow:inset 0 0 0 1px rgba(234,223,198,.06)}
+.wd .c svg{width:16px;height:16px;opacity:0;transform:scale(.5);transition:all .25s}
+.wd.done .c{background:radial-gradient(circle at 35% 30%,#A62B24,#7A1414 70%);border-color:#5E0E0E;box-shadow:inset 0 1px 2px rgba(255,255,255,.25),0 2px 6px rgba(0,0,0,.5)}
+.wd.done .c svg{opacity:1;transform:scale(1);color:var(--accInk)}
+.wd.half .c{border-color:#7A1414}
+.wd.half .c::after{content:'';width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#A62B24,#7A1414)}
+.wd.rest .c{border-style:dashed;opacity:.55}
+.wd.rest .c::after{content:'—';color:#5C4F3D;font-size:12px}
+.wd.today .l{color:#D8B96A}
+.wd.today .c{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--gold),inset 0 0 0 1px rgba(234,223,198,.06)}
 
-  /* ---------- Header ---------- */
-  .crest { text-align: center; margin-bottom: 6px; color: var(--bronze); font-size: 20px; letter-spacing: 0.5em; }
-  h1 {
-    font-family: 'Cinzel Decorative', 'Cinzel', serif;
-    text-align: center;
-    font-size: 27px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--parchment);
-    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-  }
-  .subtitle {
-    text-align: center;
-    font-style: italic;
-    color: var(--ash);
-    margin-top: 6px;
-    font-size: 15px;
-  }
-  .rule {
-    display: flex; align-items: center; gap: 10px;
-    margin: 16px 0 20px; color: var(--bronze-dim);
-  }
-  .rule::before, .rule::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--bronze-dim)); }
-  .rule::after { background: linear-gradient(90deg, var(--bronze-dim), transparent); }
-  .rule span { font-size: 13px; letter-spacing: 0.3em; font-family: 'Cinzel', serif; }
+/* cards */
+.card{background:
+   linear-gradient(180deg,rgba(120,90,40,.10),rgba(120,90,40,0) 22%),
+   radial-gradient(140% 100% at 50% 0%,#EFE3C8 0%,var(--card) 55%,#E0D0AA 100%);
+  border:1px solid var(--line2);border-radius:var(--r);padding:21px 20px;margin-bottom:16px;
+  position:relative;transition:box-shadow .3s;
+  box-shadow:0 1px 0 rgba(0,0,0,.5),0 10px 26px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,250,235,.35)}
+.card::before{content:'';position:absolute;inset:5px;border:1px solid var(--line);border-radius:3px;
+  pointer-events:none;opacity:.8}
+.card::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:var(--r);opacity:.5;
+  background:
+   radial-gradient(38% 30% at 12% 8%,rgba(122,78,18,.10),transparent 70%),
+   radial-gradient(30% 26% at 88% 92%,rgba(122,78,18,.12),transparent 70%)}
+.card.doneState{box-shadow:0 1px 0 rgba(0,0,0,.5),0 10px 26px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,250,235,.35),0 0 0 2px color-mix(in srgb,var(--acc) 55%,transparent)}
+.shead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+.stitle{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:.04em}
+.badge{font-family:var(--disp);font-size:11px;font-weight:600;color:var(--sub);background:transparent;
+  border:1px solid var(--line2);border-radius:3px;padding:5px 11px;white-space:nowrap;letter-spacing:.06em}
+.badge.ok{color:var(--accInk);background:linear-gradient(180deg,#A02420,#7A1414);border-color:#5E0E0E}
+.smeta{color:var(--sub);font-size:15px;font-weight:500;margin-bottom:14px;font-style:italic}
+.pbar{height:4px;background:rgba(90,70,40,.25);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7A1414,#A62B24);border-radius:2px;
+  transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.pcount{font-size:12px;color:var(--mut);font-weight:500;margin-bottom:8px}
 
-  /* ---------- Stat plaques ---------- */
-  .plaques { display: flex; gap: 8px; margin-bottom: 18px; }
-  .plaque {
-    flex: 1;
-    background: linear-gradient(180deg, var(--smoke), #181209);
-    border: 1px solid var(--bronze-dim);
-    outline: 1px solid rgba(160,124,60,0.18);
-    outline-offset: 3px;
-    padding: 10px 8px 9px;
-    text-align: center;
-  }
-  .plaque .label { font-family: 'Cinzel', serif; font-size: 9.5px; letter-spacing: 0.18em; color: var(--ash); }
-  .plaque .value { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: var(--parchment); margin-top: 3px; line-height: 1; }
-  .plaque .unit { font-size: 12px; font-style: italic; color: var(--ash); margin-top: 3px; }
+/* exercise rows */
+.ex{display:flex;align-items:flex-start;gap:14px;padding:14px 2px;border-top:1px solid rgba(143,123,82,.4);
+  cursor:pointer;user-select:none}
+.ex:first-of-type{border-top:0}
+.chk{flex:0 0 25px;height:25px;border-radius:50%;border:1.5px solid var(--line2);margin-top:1px;
+  display:grid;place-items:center;transition:all .22s cubic-bezier(.3,1.4,.4,1);
+  background:rgba(255,250,235,.35)}
+.chk svg{width:14px;height:14px;color:var(--accInk);opacity:0;transform:scale(.4);transition:all .22s}
+.ex:active .chk{transform:scale(.92)}
+.ex.on .chk{background:radial-gradient(circle at 35% 30%,#A62B24,#7A1414 75%);border-color:#5E0E0E;box-shadow:inset 0 1px 2px rgba(255,255,255,.3),0 1px 3px rgba(0,0,0,.35)}
+.ex.on .chk svg{opacity:1;transform:scale(1)}
+.exb{min-width:0;flex:1}
+.exn{font-weight:600;font-size:17.5px;transition:color .2s}
+.ex.on .exn{color:var(--mut);text-decoration:line-through;text-decoration-thickness:1.5px}
+.exd{color:var(--sub);font-size:14.5px;margin-top:3px;line-height:1.45}
+.ex.on .exd{color:var(--mut)}
+.knee{display:inline-flex;align-items:center;gap:5px;color:var(--amber);font-size:12.5px;font-style:italic;
+  font-weight:600;margin-top:5px}
+.knee svg{width:11px;height:11px}
 
-  /* ---------- Trial progress ---------- */
-  .trial {
-    background: linear-gradient(180deg, var(--smoke), #181209);
-    border: 1px solid var(--bronze-dim);
-    padding: 13px 15px;
-    margin-bottom: 20px;
-  }
-  .trial-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
-  .trial-head .t { font-family: 'Cinzel', serif; font-size: 11.5px; letter-spacing: 0.18em; color: var(--bronze); }
-  .trial-head .p { font-family: 'Cinzel', serif; font-size: 12px; color: var(--ash); }
-  .trial-bar { height: 7px; background: rgba(0,0,0,0.5); border: 1px solid rgba(160,124,60,0.25); }
-  .trial-fill { height: 100%; background: linear-gradient(90deg, var(--blood), var(--blood-bright)); transition: width .4s ease; }
-  .trial-fill.gold { background: linear-gradient(90deg, var(--bronze-dim), var(--bronze)); }
-  .trial-msg { margin-top: 9px; font-style: italic; font-size: 14.5px; color: var(--bronze); }
+/* inline lift logger */
+.logrow{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.step{display:flex;align-items:center;background:rgba(255,250,235,.5);border:1px solid var(--line2);
+  border-radius:4px;overflow:hidden}
+.step button{width:38px;height:40px;background:none;border:0;color:var(--sub);font-size:19px;
+  font-weight:600;cursor:pointer;transition:background .15s}
+.step button:active{background:rgba(143,123,82,.25)}
+.step .v{min-width:66px;text-align:center;font-family:var(--disp);font-weight:600;font-size:15.5px}
+.step .v small{color:var(--mut);font-size:11px;font-weight:500;margin-left:2px}
+.savebtn{height:40px;padding:0 16px;border-radius:4px;background:linear-gradient(180deg,#3A2C1A,#2A2013);
+  border:1px solid #1D160C;color:#EADFC6;font-family:var(--disp);font-weight:600;
+  font-size:12px;letter-spacing:.05em;cursor:pointer;transition:all .2s}
+.savebtn:active{transform:scale(.96)}
+.savebtn.saved{background:linear-gradient(180deg,#A02420,#7A1414);border-color:#5E0E0E;color:var(--accInk)}
+.lasthint{font-size:13px;color:var(--mut);font-weight:500;width:100%;font-style:italic}
+.lasthint b{color:var(--sub)}
 
-  /* ---------- Tabs ---------- */
-  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-  .tab {
-    flex: 1; font-family: 'Cinzel', serif; font-size: 12.5px; letter-spacing: 0.14em;
-    padding: 9px 0; text-align: center; cursor: pointer; user-select: none;
-    color: var(--ash); border: 1px solid transparent; background: none;
-  }
-  .tab.active { color: var(--parchment); border: 1px solid var(--bronze-dim); background: rgba(160,124,60,0.07); }
+/* golf round form */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.fld{background:rgba(255,250,235,.5);border:1px solid var(--line2);border-radius:4px;padding:11px 14px}
+.fld label{display:block;font-size:10.5px;font-weight:600;color:var(--mut);letter-spacing:.05em;
+  text-transform:uppercase;margin-bottom:4px}
+.fld input,.fld select{width:100%;background:none;border:0;color:var(--txt);font-family:var(--disp);
+  font-weight:600;font-size:18px;outline:none}
+.bigbtn{width:100%;height:52px;border:1px solid #5E0E0E;border-radius:4px;
+  background:linear-gradient(180deg,#A02420,#7A1414);color:var(--accInk);
+  font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:.09em;cursor:pointer;
+  margin-top:12px;transition:all .2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.bigbtn:active{transform:scale(.98)}
+.bigbtn:disabled{opacity:.4}
 
-  /* ---------- Parchment rite cards ---------- */
-  .rites { display: flex; flex-direction: column; gap: 11px; }
-  .rite {
-    position: relative;
-    background:
-      radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.25), transparent 50%),
-      radial-gradient(ellipse at 90% 100%, rgba(90,60,20,0.18), transparent 55%),
-      linear-gradient(170deg, var(--parchment) 0%, var(--parchment-dark) 100%);
-    color: var(--ink);
-    border: 1px solid #5a4422;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 0 30px rgba(120,85,30,0.18);
-    padding: 13px 58px 12px 15px;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-    font-family: inherit;
-    font-size: inherit;
-    transition: transform .12s ease, filter .2s ease;
-  }
-  .rite:active { transform: scale(0.985); }
-  .rite .name { font-family: 'Cinzel', serif; font-weight: 600; font-size: 15.5px; letter-spacing: 0.02em; }
-  .rite .dose { font-style: italic; color: var(--blood); font-size: 14px; margin-left: 4px; }
-  .rite .cue { font-size: 14px; color: var(--ink-soft); font-style: italic; margin-top: 3px; line-height: 1.35; }
-  .rite.done { filter: saturate(0.92) brightness(0.97); }
-  .rite.done .name { color: var(--ink-soft); }
+/* done celebration */
+.donebar{display:flex;align-items:center;gap:13px;background:rgba(138,27,27,.08);
+  border:1px solid rgba(138,27,27,.35);border-radius:4px;padding:12px 15px;
+  margin-top:12px;animation:pop .4s cubic-bezier(.2,1.4,.3,1) both}
+.seal{flex:0 0 42px;width:42px;height:42px;animation:sealSlam .5s cubic-bezier(.2,1.5,.3,1) both}
+@keyframes sealSlam{0%{transform:scale(2.1) rotate(-16deg);opacity:0}
+ 60%{transform:scale(.95) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-8deg);opacity:1}}
 
-  /* Wax seal — the signature */
-  .seal {
-    position: absolute; right: 11px; top: 50%; transform: translateY(-50%) scale(0.4) rotate(-20deg);
-    width: 40px; height: 40px; border-radius: 50%;
-    background: radial-gradient(circle at 32% 28%, #b8423a, var(--blood) 55%, #58150f 100%);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.45), inset 0 0 0 3px rgba(0,0,0,0.18), inset 0 0 9px rgba(255,200,180,0.25);
-    display: flex; align-items: center; justify-content: center;
-    color: #ecc9a8; font-family: 'Cinzel', serif; font-weight: 700; font-size: 18px;
-    opacity: 0; transition: opacity .25s ease, transform .25s cubic-bezier(.2,1.6,.4,1);
-    pointer-events: none;
-  }
-  .rite.done .seal { opacity: 1; transform: translateY(-50%) scale(1) rotate(-8deg); }
-  .seal::after {
-    content: ""; position: absolute; inset: -5px; border-radius: 50%;
-    border: 1.5px solid rgba(126,36,32,0.5);
-  }
+.donebar span{font-size:15.5px;font-weight:600;color:var(--txt);font-style:italic}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(4px)}to{opacity:1;transform:none}}
 
-  /* ---------- Banner ---------- */
-  .banner {
-    margin-top: 15px; padding: 11px 14px; text-align: center;
-    font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.08em;
-    border: 1px dashed var(--bronze-dim); color: var(--ash);
-  }
-  .banner.complete {
-    border: 1px solid var(--bronze); color: var(--parchment);
-    background: linear-gradient(180deg, rgba(160,124,60,0.14), rgba(126,36,32,0.10));
-    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-  }
+/* rest card */
+.restcard{text-align:center;padding:36px 20px}
+.restcard h2{font-family:var(--disp);font-weight:700;font-size:21px;margin-bottom:8px;letter-spacing:.05em}
+.restcard p{color:var(--sub);font-size:16px;line-height:1.6;max-width:36ch;margin:0 auto;font-style:italic}
 
-  /* ---------- Panels (feel + note) ---------- */
-  .panel {
-    background: linear-gradient(180deg, var(--smoke), #181209);
-    border: 1px solid var(--bronze-dim);
-    padding: 14px 15px; margin-top: 15px;
-  }
-  .panel .label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.18em; color: var(--bronze); margin-bottom: 11px; }
-  .feel-row { display: flex; gap: 7px; }
-  .feel {
-    flex: 1; padding: 10px 0; text-align: center; cursor: pointer;
-    font-family: 'Cinzel', serif; font-weight: 700; font-size: 16px;
-    color: var(--ash); background: rgba(0,0,0,0.3); border: 1px solid rgba(160,124,60,0.25);
-  }
-  .feel.on { color: var(--parchment); background: linear-gradient(180deg, var(--blood-bright), var(--blood)); border-color: var(--blood-bright); }
-  .feel-word { text-align: center; font-style: italic; color: var(--ash); font-size: 14.5px; margin-top: 9px; min-height: 18px; }
-  textarea {
-    width: 100%; background: rgba(0,0,0,0.35); border: 1px solid rgba(160,124,60,0.3);
-    color: var(--parchment); font-family: 'EB Garamond', serif; font-size: 15.5px;
-    padding: 10px 12px; resize: vertical; min-height: 56px;
-  }
-  textarea::placeholder { color: #6e6048; font-style: italic; }
-  textarea:focus { outline: 1px solid var(--bronze); }
+/* progress tab */
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.stat{background:radial-gradient(140% 120% at 50% 0%,#EFE3C8,var(--card) 60%,#E0D0AA);
+  border:1px solid var(--line2);border-radius:var(--r);padding:16px 17px;
+  box-shadow:0 6px 16px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,250,235,.35)}
+.stat .k{font-family:var(--disp);font-size:10.5px;font-weight:600;color:var(--mut);letter-spacing:.07em;text-transform:uppercase}
+.stat .v{font-family:var(--disp);font-weight:700;font-size:30px;letter-spacing:-.02em;margin-top:7px}
+.stat .v small{font-size:14px;color:var(--sub);font-weight:600}
+.stat .n{font-size:12px;color:var(--sub);margin-top:3px;font-weight:500}
+.sect{font-family:var(--disp);font-weight:700;font-size:16px;margin:24px 2px 10px;color:#EADFC6;letter-spacing:.08em;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.liftrow{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;
+  border-top:1px solid rgba(143,123,82,.4)}
+.liftrow:first-of-type{border-top:0}
+.liftrow .n{font-weight:600;font-size:15px}
+.liftrow .d{font-size:12.5px;color:var(--sub);margin-top:2px;font-weight:500}
+.liftrow .w{font-family:var(--disp);font-weight:700;font-size:19px}
+.liftrow .w small{font-size:12px;color:var(--sub);font-weight:600}
+.trend{display:flex;gap:7px;align-items:flex-end;height:86px;margin-top:14px}
+.trend i{flex:1;background:linear-gradient(180deg,rgba(138,27,27,.75),rgba(138,27,27,.12));
+  border:1px solid rgba(94,14,14,.4);border-bottom:0;border-radius:3px 3px 0 0;position:relative;
+  min-height:8px;display:flex;justify-content:center}
+.trend i b{position:absolute;top:-19px;font-family:var(--disp);font-weight:600;font-size:11.5px;color:var(--sub)}
+.histrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px;
+  border-top:1px solid rgba(143,123,82,.4)}
+.histrow:first-of-type{border-top:0}
+.histrow .d{font-size:13px;color:var(--sub);font-weight:500;flex:0 0 92px}
+.hdots{display:flex;gap:5px;flex:1}
+.hdots i{width:9px;height:9px;border-radius:50%;border:1px solid var(--line2)}
+.hdots i.on{background:radial-gradient(circle at 35% 30%,#A62B24,#7A1414);border-color:#5E0E0E}
+.histrow .r{font-family:var(--disp);font-weight:700;font-size:14px}
+.histrow .r.low{color:var(--mut)}
+.empty{color:var(--mut);font-size:14px;text-align:center;padding:26px 10px;font-weight:500}
 
-  /* ---------- Chronicle (history) ---------- */
-  .fortnight { display: flex; gap: 4px; }
-  .fday { flex: 1; }
-  .fday .mark { height: 26px; background: rgba(255,255,255,0.05); border: 1px solid rgba(160,124,60,0.18); }
-  .fday.full .mark { background: linear-gradient(180deg, var(--blood-bright), var(--blood)); border-color: var(--blood-bright); }
-  .fday.part .mark { background: rgba(160,124,60,0.35); }
-  .fday .d { font-size: 9.5px; text-align: center; color: var(--ash); margin-top: 4px; font-family: 'Cinzel', serif; }
-  .entry {
-    background: linear-gradient(180deg, var(--smoke), #181209);
-    border: 1px solid rgba(160,124,60,0.3);
-    padding: 11px 14px; margin-top: 9px;
-  }
-  .entry .row { display: flex; justify-content: space-between; align-items: baseline; }
-  .entry .date { font-family: 'Cinzel', serif; font-size: 13.5px; letter-spacing: 0.05em; }
-  .entry .score { font-family: 'Cinzel', serif; font-size: 12.5px; color: var(--ash); }
-  .entry .score.full { color: var(--bronze); }
-  .entry .note { font-style: italic; font-size: 14.5px; color: var(--ash); margin-top: 5px; line-height: 1.4; }
-  .empty { text-align: center; font-style: italic; color: var(--ash); padding: 34px 16px; }
+/* knee tab */
+.phase{background:radial-gradient(140% 100% at 50% 0%,#EFE3C8,var(--card) 60%,#E0D0AA);
+  border:1px solid var(--line2);border-radius:var(--r);margin-bottom:16px;overflow:hidden;
+  box-shadow:0 8px 20px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,250,235,.35)}
+.phase.live{box-shadow:0 8px 20px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,250,235,.35),0 0 0 2px rgba(138,27,27,.5)}
+.phase.lock{opacity:.55}
+.phead{display:flex;align-items:center;gap:13px;padding:16px 19px;border-bottom:1px solid rgba(143,123,82,.4)}
+.pnum{width:36px;height:36px;border-radius:50%;background:rgba(255,250,235,.4);border:1px solid var(--line2);
+  display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:15px;color:var(--sub)}
+.phase.live .pnum{background:radial-gradient(circle at 35% 30%,#A62B24,#7A1414);border-color:#5E0E0E;color:var(--accInk)}
+.phead .t{font-family:var(--disp);font-weight:700;font-size:16px}
+.phead .w{font-size:12px;color:var(--sub);font-weight:500;margin-top:2px}
+.phead .pct{margin-left:auto;font-family:var(--disp);font-weight:700;font-size:14px;color:var(--sub)}
+.phase .body{padding:4px 19px 10px}
+.knote{background:radial-gradient(140% 100% at 50% 0%,#EFE3C8,var(--card) 60%,#E0D0AA);
+  border:1px solid var(--line2);border-radius:var(--r);padding:17px 19px;
+  color:var(--sub);font-size:15px;line-height:1.6;font-style:italic;
+  box-shadow:0 8px 20px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,250,235,.35)}
+.knote b{color:var(--amber)}
 
-  .motto { text-align: center; margin-top: 34px; font-style: italic; color: #5e5138; font-size: 14px; line-height: 1.5; }
-  .hidden { display: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .rite, .seal, .trial-fill { transition: none; }
-  }
+/* tabs */
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:linear-gradient(180deg,#1D150C,#150F08);
+  border-top:1px solid #4a3a22;padding:8px 0 max(10px,env(safe-area-inset-bottom))}
+.tabbar .in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr}
+.tb{background:none;border:0;color:#8A7A5F;display:flex;flex-direction:column;align-items:center;
+  gap:4px;padding:6px 0;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:10.5px;letter-spacing:.06em;
+  transition:color .2s}
+.tb svg{width:21px;height:21px}
+.tb.on{color:#D8B96A}
+section[hidden]{display:none}
+.pane{animation:fade .3s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="frame">
+<div class="app">
 
-  <div class="crest">⚔</div>
-  <h1>The Knee Floss</h1>
-  <div class="subtitle">Daily rites for the bulletproofing of the knees</div>
-  <div class="rule"><span id="dateLine">—</span></div>
-
-  <div class="plaques">
-    <div class="plaque"><div class="label">VIGIL</div><div class="value" id="streakVal">0</div><div class="unit" id="streakUnit">days unbroken</div></div>
-    <div class="plaque"><div class="label">RITES KEPT</div><div class="value" id="sessVal">0</div><div class="unit">of 21</div></div>
-    <div class="plaque"><div class="label">KNEES, 7 DAYS</div><div class="value" id="feelVal">–</div><div class="unit">of 5</div></div>
-  </div>
-
-  <div class="trial">
-    <div class="trial-head"><span class="t">THE SECOND TRIAL</span><span class="p" id="trialPct">0%</span></div>
-    <div class="trial-bar"><div class="trial-fill" id="trialFill" style="width:0%"></div></div>
-    <div class="trial-msg hidden" id="trialMsg">Twenty one rites kept and the knees stand strong. The Second Trial awaits — return to Claude for the next progression.</div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab active" id="tabToday" onclick="setView('today')">TODAY'S RITES</button>
-    <button class="tab" id="tabChron" onclick="setView('chronicle')">THE CHRONICLE</button>
-  </div>
-
-  <!-- ============ TODAY ============ -->
-  <div id="viewToday">
-    <div class="rites" id="riteList"></div>
-    <div class="banner" id="banner">—</div>
-
-    <div class="panel">
-      <div class="label">HOW FARE THE KNEES?</div>
-      <div class="feel-row" id="feelRow"></div>
-      <div class="feel-word" id="feelWord">1 = broken · 5 = ironclad</div>
+  <!-- TODAY -->
+  <section id="p-today" class="pane">
+    <div class="hdr">
+      <div>
+        <div class="date" id="hDate">—</div>
+        <div class="sub" id="hSub">—</div>
+      </div>
+      <div class="streak">
+        <svg class="bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5z"/></svg>
+        <b id="hStreak">0</b><span>day vigil</span>
+      </div>
     </div>
+    <div class="wk" id="weekStrip"></div>
+    <div id="todayCards"></div>
+  </section>
 
-    <div class="panel">
-      <div class="label">SCRIBE'S NOTE</div>
-      <textarea id="noteBox" rows="2" placeholder="Left leg wavered on the step-downs… the Spanish squats grow easy…"></textarea>
-    </div>
-  </div>
+  <!-- PROGRESS -->
+  <section id="p-prog" class="pane" hidden>
+    <div class="hdr"><div><div class="date">Progress</div>
+      <div class="sub" id="pgSub">—</div></div></div>
+    <div class="statgrid" id="pgStats"></div>
 
-  <!-- ============ CHRONICLE ============ -->
-  <div id="viewChronicle" class="hidden">
-    <div class="panel" style="margin-top:0">
-      <div class="label">THE LAST FORTNIGHT</div>
-      <div class="fortnight" id="fortnight"></div>
-    </div>
-    <div id="entryList"></div>
-  </div>
+    <div class="sect">Lifts</div>
+    <div class="card" id="pgLifts"></div>
 
-  <div class="motto">Floss before sport, never after.<br>It counts even when it is ugly.</div>
+    <div class="sect">Golf</div>
+    <div class="statgrid" id="pgGolfStats"></div>
+    <div class="card" id="pgGolfTrend" hidden></div>
+
+    <div class="sect">Past weeks</div>
+    <div class="card" id="pgHist"></div>
+  </section>
+
+  <!-- KNEE -->
+  <section id="p-knee" class="pane" hidden>
+    <div class="hdr"><div><div class="date">Knee plan</div>
+      <div class="sub">12 weeks to your first pickup game</div></div></div>
+    <div id="kneePhases"></div>
+    <div class="knote"><b>One rule above all:</b> on any single-leg landing, the knee must not
+      drift inward. That collapse is the position an ACL-deficient knee gives way in. If it drifts,
+      repeat the phase — control first, then speed.</div>
+  </section>
+
 </div>
 
+<nav class="tabbar"><div class="in">
+  <button class="tb on" data-p="today" aria-label="Today">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-5.5"/></svg>Today</button>
+  <button class="tb" data-p="prog" aria-label="Progress">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Progress</button>
+  <button class="tb" data-p="knee" aria-label="Knee">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/></svg>Knee</button>
+</div></nav>
+
 <script>
-  var RITES = [
-    { id: "tib",      name: "Tibialis Raises",        dose: "25",        cue: "Back to the wall, toes drawn to the shins, lowered slow." },
-    { id: "calf",     name: "Calf Raises",            dose: "25 slow",   cue: "A pause at the summit, a two-count descent." },
-    { id: "spanish",  name: "Spanish Squats",         dose: "15",        cue: "Band behind the knees, lean back, sink to parallel." },
-    { id: "stepdown", name: "Step-Downs",             dose: "10 a leg",  cue: "Three seconds down, the knee true over the toes." },
-    { id: "tke",      name: "Terminal Knee Extensions", dose: "15 a leg", cue: "Full lockout, the quad clenched hard at the end." }
-  ];
-  var KEY = "kneefloss-grimoire-v1";
-  var GOAL = 21;
-  var FEEL_WORDS = ["", "Broken", "Weary", "Steady", "Strong", "Ironclad"];
+/* ───────── storage: artifact → localStorage → memory; reads existing data ───────── */
+const KEY='ledger-v2'; let mem={};
+const store={
+  async get(k){try{if(window.storage){const r=await window.storage.get(k);return r?JSON.parse(r.value):null;}}catch(e){}
+    try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){}return mem[k]??null;},
+  async set(k,v){mem[k]=v;
+    try{if(window.storage){await window.storage.set(k,JSON.stringify(v));return;}}catch(e){}
+    try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+};
+let DB={sessions:{},lifts:[],golf:[],gates:{}};
 
-  var entries = {};
-  try {
-    var raw = localStorage.getItem(KEY);
-    if (raw) entries = JSON.parse(raw).entries || {};
-  } catch (e) { entries = {}; }
+/* ───────── the plan (plain names; same proven content) ───────── */
+const K=true; // knee-critical marker
+const PLAN={
+ 1:[{id:'iron-mon',title:'Squat Day',meta:'Strength · Life Time · ~45 min',
+   ex:[{n:'Box jump',d:'4×3 — step down off the box, never jump down',k:K},
+       {n:'Back squat',d:'4×5 — 2 min rest, move the bar fast',log:'squat'},
+       {n:'Bench press',d:'3×6 — superset with pull-ups',log:'bench'},
+       {n:'Pull-ups',d:'3× max'},
+       {n:'Copenhagen plank',d:'2×20s per side — bench under the knee',k:K},
+       {n:'Bike intervals',d:'10 min — 30s hard / 90s easy (no running after squats)'}]}],
+ 2:[{id:'golf-tue',title:'Putting',meta:'Golf · 30 min · before the office',
+   ex:[{n:'Speed ladder',d:'4 balls to 15/25/35/45 ft — past the hole, never short'},
+       {n:'Gate drill',d:'3–6 ft between two tees — 20 makes in a row'},
+       {n:'Ten straight',d:'4-ft circle. Miss one, restart. Leave on ten.'}]}],
+ 3:[{id:'golf-wed',title:'Chipping',meta:'Golf · 30 min · morning',
+   ex:[{n:'One club, five lies',d:'56° from tight, rough, uphill, downhill, sidehill — 5 each'},
+       {n:'Landing spot',d:'Pick a spot, not the hole. Ten inside a towel.'},
+       {n:'Up-and-down sim',d:'9 random drops. Chip + one putt. Count the saves.'}]},
+   {id:'iron-wed',title:'Press Day',meta:'Strength · any gym · evening',
+   ex:[{n:'Med-ball rotational throw',d:'4×4 per side — max intent, full rest. Clubhead speed lives here.'},
+       {n:'Overhead press',d:'4×5 — dumbbells work if the office gym is thin',log:'ohp'},
+       {n:'Dips',d:'3×8 — superset with the row'},
+       {n:'Chest-supported row',d:'3×10'},
+       {n:'Pallof press',d:'3×10 per side — torso stays square'},
+       {n:'Run',d:'1.5 miles'}]}],
+ 4:[{id:'golf-thu',title:'Range',meta:'Golf · 30 min · before the office',
+   ex:[{n:'Alignment sticks',d:'2 minutes. Every session. Non-negotiable.'},
+       {n:'7-iron ladder',d:'15 balls, one swing thought only'},
+       {n:'Nine windows',d:'Low/mid/high × left/straight/right — 2 each'},
+       {n:'Driver',d:'10 balls, pick the target before each swing'}]}],
+ 5:[{id:'iron-fri',title:'Hamstrings + Pull',meta:'Strength · Life Time · ~45 min',
+   ex:[{n:'Skater hop',d:'3×5 per side — land and hold 3 seconds',k:K},
+       {n:'Romanian deadlift',d:'3×8 at RPE 7 — capped, you walk 18 tomorrow',k:K,log:'rdl'},
+       {n:'Nordic or slider curl',d:'2×5 — slow on the way down',k:K},
+       {n:'Lat pulldown',d:'3×10 — superset with the press'},
+       {n:'Incline DB press',d:'3×8'},
+       {n:'Suitcase carry',d:'3×40 yd per side'},
+       {n:'Run',d:'1 mile'}]}],
+ 6:[{id:'round-sat',title:'The Round',meta:'Golf · 18 holes',golf:true,
+   ex:[{n:'Warm up short',d:'Ten putts, five chips. No range bucket first.'},
+       {n:'Count putts inside 6 ft',d:'Made and attempted — that\u2019s all'},
+       {n:'Count up-and-downs',d:'Missed green, down in two. Chances too.'}]}],
+ 0:[]
+};
+const LIFTNAMES={squat:'Back squat',bench:'Bench press',ohp:'Overhead press',rdl:'Romanian deadlift'};
+const PHASES=[
+ {t:'Foundation',w:'Weeks 1–4 · build the backup ligament',g:[
+   ['12 strength sessions done','Three a week, four weeks. No shortcuts.'],
+   ['Hamstrings twice weekly','RDL + Nordic — your functional ACL.'],
+   ['Copenhagen 3×30s per side','Adductors stabilize rotation.'],
+   ['Single-leg RDL with real load','Entry exam for phase 2.']]},
+ {t:'Landing',w:'Weeks 5–8 · learn to absorb',g:[
+   ['One-leg balance 60s, eyes closed','Both legs.'],
+   ['Single-leg hop, stick 3s ×5','The stick is the skill.'],
+   ['Depth drop 12", no inward drift','Film from the front. Watch the knee.'],
+   ['20 landings, zero collapses','One inward dive = repeat the phase.']]},
+ {t:'Cutting',w:'Weeks 9–12 · change direction',g:[
+   ['45° cut at half speed','Planned, flat, fresh.'],
+   ['90° cut at ¾ speed','Still planned, still fresh.'],
+   ['Reactive cut on a call','Someone points, you cut.'],
+   ['5 min continuous movement','Tired hamstrings = unprotected knee.']]},
+ {t:'First game',w:'Week 13 · one game, then stop',g:[
+   ['Hinged brace on','Position feedback, not scaffolding.'],
+   ['One game, walk off','Not two. Not one more.'],
+   ['Next-morning check ×2','Swelling means back to phase 3.'],
+   ['Log it, decide','Two clean mornings earns game two.']]}];
 
-  function save() {
-    try { localStorage.setItem(KEY, JSON.stringify({ entries: entries })); }
-    catch (e) { /* storage unavailable; session continues in memory */ }
+/* ───────── helpers ───────── */
+const iso=d=>d.toISOString().slice(0,10);
+const today=()=>new Date();
+function weekStart(d){const x=new Date(d);const k=(x.getDay()+6)%7;
+  x.setDate(x.getDate()-k);x.setHours(0,0,0,0);return x;}
+function sessKey(d,id){return iso(d)+'|'+id;}
+function sessDone(d,id){return !!DB.sessions[sessKey(d,id)]?.done;}
+function dayState(d){const ms=PLAN[d.getDay()]||[];if(!ms.length)return'rest';
+  const n=ms.filter(m=>sessDone(d,m.id)).length;
+  return n===0?'none':(n===ms.length?'done':'half');}
+function weekCounts(ws){let done=0,total=0;
+  for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(d.getDate()+i);
+    (PLAN[d.getDay()]||[]).forEach(m=>{total++;if(sessDone(d,m.id))done++;});}
+  return{done,total};}
+function streak(){let n=0;const d=new Date();d.setHours(0,0,0,0);
+  for(let i=0;i<500;i++){const ms=PLAN[d.getDay()]||[];
+    if(!ms.length){d.setDate(d.getDate()-1);continue;}
+    const met=ms.some(m=>sessDone(d,m.id));
+    if(met)n++;else{if(i===0){d.setDate(d.getDate()-1);continue;}break;}
+    d.setDate(d.getDate()-1);}
+  return n;}
+function totalDone(){return Object.values(DB.sessions).filter(s=>s.done).length;}
+function lastLift(key){const rows=DB.lifts.filter(l=>l.lift===key);
+  return rows.length?rows[rows.length-1]:null;}
+function bestLift(key){const rows=DB.lifts.filter(l=>l.lift===key);
+  return rows.length?Math.max(...rows.map(r=>+r.wt)):0;}
+function gatePhase(){let done=0;PHASES.forEach((p,pi)=>p.g.forEach((g,gi)=>{
+  if(DB.gates[pi+'-'+gi])done++;}));
+  return{phase:Math.min(3,Math.floor(done/4)),done,total:16};}
+const WAX=`<svg class="seal" viewBox="0 0 48 48"><defs><radialGradient id="wx" cx="38%" cy="32%" r="75%"><stop offset="0%" stop-color="#B23430"/><stop offset="55%" stop-color="#8A1B1B"/><stop offset="100%" stop-color="#5E0E0E"/></radialGradient></defs><path d="M24 3c5-1 9 2 12 4s8 2 9 7-2 8-1 12 2 8-2 11-7 2-10 5-7 4-11 2-6-4-10-5-7-4-7-8 2-7 1-11 0-8 4-10 6-2 8-4 3-2 7-3z" fill="url(#wx)"/><circle cx="24" cy="24" r="13.5" fill="none" stroke="#EADFC6" stroke-width="1" opacity=".55"/><path d="M24 15v18M24 33l-2.2-3.4h4.4zM18.5 20h11M20.5 17.4h7" stroke="#EADFC6" stroke-width="1.5" fill="none" opacity=".8"/></svg>`;
+const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg>';
+
+/* ───────── render: today ───────── */
+function renderHeader(){
+  const d=today();
+  document.getElementById('hDate').textContent=
+    d.toLocaleDateString('en-US',{weekday:'long'});
+  const ms=PLAN[d.getDay()]||[];
+  const names=ms.map(m=>m.title).join(' + ')||'Rest day';
+  document.getElementById('hSub').textContent=
+    d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+names;
+  document.getElementById('hStreak').textContent=streak();
+}
+function renderWeekStrip(){
+  const ws=weekStart(today()),ti=iso(today()),host=document.getElementById('weekStrip');
+  const L=['M','T','W','T','F','S','S'];
+  let h='';
+  for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(d.getDate()+i);
+    const st=dayState(d);
+    h+=`<div class="wd ${st} ${iso(d)===ti?'today':''}">
+      <div class="l">${L[i]}</div><div class="c">${CHECK}</div></div>`;}
+  host.innerHTML=h;
+}
+function stepper(id,val,unit,inc){
+  return `<div class="step" data-step="${id}" data-inc="${inc}">
+    <button type="button" data-dir="-1" aria-label="decrease">−</button>
+    <div class="v"><span>${val}</span><small>${unit}</small></div>
+    <button type="button" data-dir="1" aria-label="increase">+</button></div>`;
+}
+function renderToday(){
+  renderHeader();renderWeekStrip();
+  const d=today(),ms=PLAN[d.getDay()]||[],host=document.getElementById('todayCards');
+  if(!ms.length){
+    host.innerHTML=`<div class="card restcard">
+      <h2>Rest day</h2>
+      <p>Muscle is forged on the day off, not the day on. Walk, stretch the hips, look over the week's page. The vigil holds on scheduled rest.</p></div>`;
+    return;
   }
+  host.innerHTML=ms.map(m=>{
+    const key=sessKey(d,m.id),rec=DB.sessions[key]||{done:false,ex:{}};
+    const nDone=m.ex.filter((_,i)=>rec.ex&&rec.ex[i]).length;
+    const rows=m.ex.map((e,i)=>{
+      const on=rec.ex&&rec.ex[i];
+      let logHtml='';
+      if(e.log){
+        const last=lastLift(e.log);
+        const wt=last?+last.wt:( {squat:185,bench:155,ohp:95,rdl:155}[e.log]||95 );
+        const reps=last?+last.reps:5;
+        logHtml=`<div class="logrow" data-lift="${e.log}" onclick="event.stopPropagation()">
+          ${stepper('wt-'+e.log,wt,'lb',5)}
+          ${stepper('rp-'+e.log,reps,'reps',1)}
+          <button class="savebtn" data-savelift="${e.log}">Log set</button>
+          <div class="lasthint">${last?`Last: <b>${last.wt} lb × ${last.reps}</b>${bestLift(e.log)<=+last.wt?' · current best':''}`:'First time — log your top working set'}</div>
+        </div>`;
+      }
+      return `<div class="ex ${on?'on':''}" data-k="${key}" data-i="${i}" data-sess="${m.id}"
+        role="checkbox" tabindex="0" aria-checked="${on?'true':'false'}">
+        <div class="chk">${CHECK}</div>
+        <div class="exb"><div class="exn">${e.n}</div><div class="exd">${e.d}</div>
+        ${e.k?'<div class="knee"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6z"/></svg>protects your knees — don\u2019t skip</div>':''}
+        ${logHtml}</div></div>`;
+    }).join('');
+    const golfForm=m.golf?`
+      <div class="grid2">
+        <div class="fld"><label>Score</label><input id="gScore" type="number" inputmode="numeric" placeholder="98"></div>
+        <div class="fld"><label>Holes</label><select id="gHoles"><option>18</option><option>9</option></select></div>
+        <div class="fld"><label>Putts in 6 ft — made</label><input id="pMade" type="number" inputmode="numeric" placeholder="7"></div>
+        <div class="fld"><label>Putts in 6 ft — tries</label><input id="pAtt" type="number" inputmode="numeric" placeholder="10"></div>
+        <div class="fld"><label>Up &amp; downs — made</label><input id="uMade" type="number" inputmode="numeric" placeholder="3"></div>
+        <div class="fld"><label>Up &amp; downs — chances</label><input id="uAtt" type="number" inputmode="numeric" placeholder="9"></div>
+      </div>
+      <button class="bigbtn" id="golfSave">Save round</button>`:'';
+    return `<div class="card ${rec.done?'doneState':''}" id="card-${m.id}">
+      <div class="shead"><div class="stitle">${m.title}</div>
+        <div class="badge ${rec.done?'ok':''}" id="badge-${m.id}">${rec.done?'Complete':nDone+' / '+m.ex.length}</div></div>
+      <div class="smeta">${m.meta}</div>
+      <div class="pbar"><i id="pb-${m.id}" style="width:${(nDone/m.ex.length)*100}%"></i></div>
+      ${rows}
+      ${rec.done?`<div class="donebar">${WAX}<span>Sealed and done — the vigil holds. See you ${nextName(d)}.</span></div>`:''}
+      ${golfForm}
+    </div>`;
+  }).join('');
+  if(document.getElementById('golfSave'))wireGolf();
+}
+function nextName(d){
+  for(let i=1;i<=7;i++){const x=new Date(d);x.setDate(x.getDate()+i);
+    const ms=PLAN[x.getDay()]||[];
+    if(ms.length)return x.toLocaleDateString('en-US',{weekday:'long'});}
+  return 'soon';}
 
-  function dayKey(d) {
-    d = d || new Date();
-    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-  }
-  function lastNDays(n) {
-    var out = [];
-    for (var i = n - 1; i >= 0; i--) { var d = new Date(); d.setDate(d.getDate() - i); out.push(dayKey(d)); }
-    return out;
-  }
-  function getToday() {
-    var k = dayKey();
-    if (!entries[k]) entries[k] = { done: [], feel: 0, note: "" };
-    return entries[k];
-  }
-  function isComplete(e) { return e && e.done && e.done.length === RITES.length; }
-  function streak() {
-    var s = 0, d = new Date();
-    if (!isComplete(entries[dayKey(d)])) d.setDate(d.getDate() - 1);
-    while (isComplete(entries[dayKey(d)])) { s++; d.setDate(d.getDate() - 1); }
-    return s;
-  }
+/* ───────── render: progress ───────── */
+function renderProg(){
+  const ws=weekStart(today()),{done,total}=weekCounts(ws);
+  document.getElementById('pgSub').textContent=
+    `${done} of ${total} sessions this week`;
+  document.getElementById('pgStats').innerHTML=`
+   <div class="stat"><div class="k">This week</div><div class="v">${done}<small> / ${total}</small></div>
+     <div class="n">${done>=6?'target hit':'target: 6'}</div></div>
+   <div class="stat"><div class="k">Streak</div><div class="v">${streak()}<small> days</small></div>
+     <div class="n">rest days don\u2019t break it</div></div>
+   <div class="stat"><div class="k">All-time</div><div class="v">${totalDone()}</div>
+     <div class="n">sessions completed</div></div>
+   <div class="stat"><div class="k">Knee plan</div><div class="v">${['1','2','3','4'][gatePhase().phase]}<small> / 4</small></div>
+     <div class="n">${PHASES[gatePhase().phase].t.toLowerCase()} phase</div></div>`;
+  document.getElementById('pgLifts').innerHTML=Object.keys(LIFTNAMES).map(k=>{
+    const best=bestLift(k),last=lastLift(k);
+    return `<div class="liftrow"><div><div class="n">${LIFTNAMES[k]}</div>
+      <div class="d">${last?`last ${last.wt} lb × ${last.reps} · ${last.date.slice(5).replace('-','/')}`:'no sets yet'}</div></div>
+      <div class="w">${best||'—'}${best?'<small> lb best</small>':''}</div></div>`;}).join('');
+  const r=DB.golf,avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+  const last5=avg(r.slice(-5).filter(x=>x.holes==18).map(x=>+x.score));
+  const best18=r.filter(x=>x.holes==18).map(x=>+x.score);
+  const pm=r.reduce((s,x)=>s+(+x.pMade||0),0),pa=r.reduce((s,x)=>s+(+x.pAtt||0),0);
+  const um=r.reduce((s,x)=>s+(+x.uMade||0),0),ua=r.reduce((s,x)=>s+(+x.uAtt||0),0);
+  document.getElementById('pgGolfStats').innerHTML=`
+   <div class="stat"><div class="k">Avg (last 5)</div><div class="v">${last5?last5.toFixed(1):'—'}</div>
+     <div class="n">${r.length} rounds logged</div></div>
+   <div class="stat"><div class="k">Best 18</div><div class="v">${best18.length?Math.min(...best18):'—'}</div>
+     <div class="n">career low</div></div>
+   <div class="stat"><div class="k">Short putts</div><div class="v">${pa?Math.round(pm/pa*100):'—'}<small>%</small></div>
+     <div class="n">${pm}/${pa} inside 6 ft</div></div>
+   <div class="stat"><div class="k">Up &amp; down</div><div class="v">${ua?Math.round(um/ua*100):'—'}<small>%</small></div>
+     <div class="n">${um}/${ua} saved</div></div>`;
+  const t=r.slice(-8).filter(x=>x.holes==18).map(x=>+x.score);
+  const tw=document.getElementById('pgGolfTrend');
+  if(t.length>1){const hi=Math.max(...t),lo=Math.min(...t);
+    tw.innerHTML='<div style="font-size:11.5px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.03em">Score trend · taller = better round</div>'+
+    '<div class="trend">'+t.map(v=>`<i style="height:${16+((hi-v)/((hi-lo)||1))*54}px"><b>${v}</b></i>`).join('')+'</div>';
+    tw.hidden=false;}else tw.hidden=true;
+  const rows=[];const ws0=weekStart(today());
+  for(let w=1;w<=8;w++){const s=new Date(ws0);s.setDate(s.getDate()-7*w);
+    const{done:n,total:tt}=weekCounts(s);
+    const any=Object.keys(DB.sessions).some(k=>{const dt=k.slice(0,10);
+      return dt>=iso(s)&&dt<iso(new Date(s.getTime()+7*864e5));});
+    if(!any&&rows.length)break;if(!any)continue;
+    const e=new Date(s);e.setDate(e.getDate()+6);
+    rows.push(`<div class="histrow"><div class="d">${s.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${e.getDate()}</div>
+      <div class="hdots">${Array.from({length:7},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('')}</div>
+      <div class="r ${n<6?'low':''}">${n}/${tt}</div></div>`);}
+  document.getElementById('pgHist').innerHTML=rows.length?rows.join(''):
+    '<div class="empty">Your first week is in progress — history starts Sunday night.</div>';
+}
 
-  // ---------- Render ----------
-  function render() {
-    var today = getToday();
+/* ───────── render: knee ───────── */
+function renderKnee(){
+  const gp=gatePhase();
+  document.getElementById('kneePhases').innerHTML=PHASES.map((p,pi)=>{
+    const n=p.g.filter((_,gi)=>DB.gates[pi+'-'+gi]).length;
+    const state=pi===gp.phase?'live':(pi<gp.phase?'':'lock');
+    return `<div class="phase ${state}"><div class="phead">
+      <div class="pnum">${pi+1}</div>
+      <div><div class="t">${p.t}</div><div class="w">${p.w}</div></div>
+      <div class="pct">${n}/4</div></div>
+      <div class="body">${p.g.map((g,gi)=>{const on=DB.gates[pi+'-'+gi];
+        return `<div class="ex ${on?'on':''}" data-gate="${pi}-${gi}" role="checkbox" tabindex="0"
+          aria-checked="${on?'true':'false'}"><div class="chk">${CHECK}</div>
+          <div class="exb"><div class="exn">${g[0]}</div><div class="exd">${g[1]}</div></div></div>`;}).join('')}
+      </div></div>`;}).join('');
+}
+function renderAll(){renderToday();renderProg();renderKnee();}
 
-    document.getElementById("dateLine").textContent = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" }).toUpperCase();
-
-    // rites
-    var list = document.getElementById("riteList");
-    list.innerHTML = "";
-    RITES.forEach(function(r) {
-      var done = today.done.indexOf(r.id) !== -1;
-      var b = document.createElement("button");
-      b.className = "rite" + (done ? " done" : "");
-      b.innerHTML =
-        '<div class="name">' + r.name + ' <span class="dose">· ' + r.dose + '</span></div>' +
-        '<div class="cue">' + r.cue + '</div>' +
-        '<div class="seal">✓</div>';
-      b.onclick = function() {
-        var i = today.done.indexOf(r.id);
-        if (i === -1) today.done.push(r.id); else today.done.splice(i, 1);
-        save(); render();
-      };
-      list.appendChild(b);
-    });
-
-    // banner
-    var n = today.done.length;
-    var banner = document.getElementById("banner");
-    if (n === RITES.length) {
-      banner.className = "banner complete";
-      banner.textContent = "THE RITES ARE KEPT. THE KNEES ARE ARMORED.";
-    } else {
-      banner.className = "banner";
-      banner.textContent = n + " OF " + RITES.length + " RITES KEPT · ROUGHLY " + ((RITES.length - n) * 2) + " MINUTES REMAIN";
+/* ───────── events ───────── */
+async function save(){await store.set(KEY,DB);}
+document.querySelectorAll('.tb').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tb').forEach(x=>x.classList.toggle('on',x===t));
+  document.querySelectorAll('section').forEach(s=>s.hidden=true);
+  const el=document.getElementById('p-'+t.dataset.p);el.hidden=false;
+  el.style.animation='none';el.offsetHeight;el.style.animation='';
+  if(t.dataset.p==='prog')renderProg();
+}));
+document.addEventListener('click',async e=>{
+  /* steppers */
+  const sb=e.target.closest('.step button');
+  if(sb){const st=sb.closest('.step'),v=st.querySelector('.v span');
+    v.textContent=Math.max(0,+v.textContent+(+sb.dataset.dir)*(+st.dataset.inc));return;}
+  /* log a set */
+  const lv=e.target.closest('[data-savelift]');
+  if(lv){const key=lv.dataset.savelift,row=lv.closest('.logrow');
+    const wt=+row.querySelector('[data-step="wt-'+key+'"] .v span').textContent;
+    const reps=+row.querySelector('[data-step="rp-'+key+'"] .v span').textContent;
+    const prevBest=bestLift(key);
+    DB.lifts.push({lift:key,wt,reps,date:iso(today()),ts:Date.now()});
+    await save();
+    lv.classList.add('saved');lv.textContent=wt>prevBest?'PR! Logged':'Logged';
+    setTimeout(()=>{lv.classList.remove('saved');lv.textContent='Log set';
+      const h=row.querySelector('.lasthint');
+      if(h)h.innerHTML=`Last: <b>${wt} lb × ${reps}</b>${wt>=bestLift(key)?' · current best':''}`;},1600);
+    return;}
+  /* exercise check */
+  const ex=e.target.closest('.ex[data-k]');
+  if(ex){const key=ex.dataset.k,i=+ex.dataset.i,sid=ex.dataset.sess;
+    DB.sessions[key]=DB.sessions[key]||{done:false,ex:{}};
+    DB.sessions[key].ex[i]=!DB.sessions[key].ex[i];
+    ex.classList.toggle('on');
+    ex.setAttribute('aria-checked',ex.classList.contains('on'));
+    const m=(PLAN[today().getDay()]||[]).find(x=>x.id===sid);
+    if(m){const rec=DB.sessions[key];
+      const n=m.ex.filter((_,j)=>rec.ex[j]).length;
+      const was=rec.done;rec.done=(n===m.ex.length);
+      const pb=document.getElementById('pb-'+sid);
+      if(pb)pb.style.width=(n/m.ex.length*100)+'%';
+      const bg=document.getElementById('badge-'+sid);
+      if(bg){bg.textContent=rec.done?'Complete':n+' / '+m.ex.length;
+        bg.classList.toggle('ok',rec.done);}
+      if(rec.done!==was){renderToday();/* full refresh shows/hides donebar + strip */}
+      else renderWeekStrip(),renderHeader();
     }
-
-    // feel
-    var row = document.getElementById("feelRow");
-    row.innerHTML = "";
-    for (var f = 1; f <= 5; f++) {
-      (function(f) {
-        var d = document.createElement("button");
-        d.className = "feel" + (today.feel === f ? " on" : "");
-        d.textContent = f;
-        d.onclick = function() { today.feel = (today.feel === f ? 0 : f); save(); render(); };
-        row.appendChild(d);
-      })(f);
-    }
-    document.getElementById("feelWord").textContent = today.feel ? FEEL_WORDS[today.feel] : "1 = broken · 5 = ironclad";
-
-    // note
-    var box = document.getElementById("noteBox");
-    if (document.activeElement !== box) box.value = today.note || "";
-
-    // stats
-    var keys = Object.keys(entries);
-    var total = keys.filter(function(k){ return isComplete(entries[k]); }).length;
-    var s = streak();
-    document.getElementById("streakVal").textContent = s;
-    document.getElementById("streakUnit").textContent = s === 1 ? "day unbroken" : "days unbroken";
-    document.getElementById("sessVal").textContent = total;
-
-    var feels = lastNDays(7).map(function(k){ return entries[k] && entries[k].feel; }).filter(function(x){ return x > 0; });
-    var avg = feels.length ? feels.reduce(function(a,b){ return a+b; }, 0) / feels.length : 0;
-    document.getElementById("feelVal").textContent = avg ? avg.toFixed(1) : "–";
-
-    // trial
-    var pct = Math.min(100, Math.round(total / GOAL * 100));
-    var ready = total >= GOAL && avg >= 4;
-    var fill = document.getElementById("trialFill");
-    fill.style.width = pct + "%";
-    fill.className = "trial-fill" + (ready ? " gold" : "");
-    document.getElementById("trialPct").textContent = ready ? "UNLOCKED" : pct + "%";
-    document.getElementById("trialMsg").className = "trial-msg" + (ready ? "" : " hidden");
-
-    renderChronicle();
-  }
-
-  function renderChronicle() {
-    var fort = document.getElementById("fortnight");
-    fort.innerHTML = "";
-    lastNDays(14).forEach(function(k) {
-      var e = entries[k];
-      var cls = "fday" + (isComplete(e) ? " full" : (e && e.done && e.done.length > 0 ? " part" : ""));
-      var d = document.createElement("div");
-      d.className = cls;
-      d.innerHTML = '<div class="mark"></div><div class="d">' + k.slice(8) + '</div>';
-      fort.appendChild(d);
-    });
-
-    var listEl = document.getElementById("entryList");
-    listEl.innerHTML = "";
-    var keys = Object.keys(entries).filter(function(k){
-      var e = entries[k];
-      return (e.done && e.done.length) || e.feel || e.note;
-    }).sort().reverse().slice(0, 30);
-
-    if (keys.length === 0) {
-      listEl.innerHTML = '<div class="empty">The chronicle is empty. The first rite is kept on the morrow.</div>';
-      return;
-    }
-    keys.forEach(function(k) {
-      var e = entries[k];
-      var full = isComplete(e);
-      var div = document.createElement("div");
-      div.className = "entry";
-      var dateStr = new Date(k + "T12:00:00").toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" });
-      div.innerHTML =
-        '<div class="row"><span class="date">' + dateStr + '</span>' +
-        '<span class="score' + (full ? ' full' : '') + '">' + (e.done ? e.done.length : 0) + '/' + RITES.length +
-        (e.feel ? ' · knees ' + e.feel : '') + '</span></div>' +
-        (e.note ? '<div class="note">' + e.note.replace(/</g,"&lt;") + '</div>' : '');
-      listEl.appendChild(div);
-    });
-  }
-
-  function setView(v) {
-    document.getElementById("viewToday").className = v === "today" ? "" : "hidden";
-    document.getElementById("viewChronicle").className = v === "chronicle" ? "" : "hidden";
-    document.getElementById("tabToday").className = "tab" + (v === "today" ? " active" : "");
-    document.getElementById("tabChron").className = "tab" + (v === "chronicle" ? " active" : "");
-  }
-
-  document.getElementById("noteBox").addEventListener("blur", function() {
-    getToday().note = this.value; save(); render();
+    await save();return;}
+  /* knee gates */
+  const gt=e.target.closest('.ex[data-gate]');
+  if(gt){DB.gates[gt.dataset.gate]=!DB.gates[gt.dataset.gate];
+    await save();renderKnee();return;}
+});
+document.addEventListener('keydown',e=>{
+  if((e.key===' '||e.key==='Enter')&&e.target.closest('.ex')){e.preventDefault();e.target.click();}});
+function wireGolf(){
+  document.getElementById('golfSave').addEventListener('click',async()=>{
+    const s=+document.getElementById('gScore').value;if(!s)return;
+    const v=id=>+document.getElementById(id).value||0;
+    DB.golf.push({score:s,holes:document.getElementById('gHoles').value,
+      pMade:v('pMade'),pAtt:v('pAtt'),uMade:v('uMade'),uAtt:v('uAtt'),
+      date:iso(today()),ts:Date.now()});
+    await save();
+    const b=document.getElementById('golfSave');
+    b.textContent='Saved';b.disabled=true;
+    setTimeout(()=>{b.textContent='Save round';b.disabled=false;},1500);
+    renderProg();
   });
+}
 
-  render();
+(async()=>{
+  const d=await store.get(KEY);
+  if(d)DB=Object.assign(DB,d);
+  if(window.__SEED)DB=Object.assign(DB,window.__SEED);
+  renderAll();
+})();
 </script>
 </body>
 </html>
